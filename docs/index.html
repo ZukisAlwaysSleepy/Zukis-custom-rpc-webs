@@ -39,8 +39,8 @@ html, body {
 .card {
   background: #313338;
   border-radius: clamp(10px, 2vw, 16px);
-  padding: clamp(18px, 3vw, 30px);
-  width: min(440px, 92vw);
+  padding: clamp(18px, 3vw, 40px);
+  width: clamp(320px, 55vw, 680px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   text-align: left;
 }
@@ -219,11 +219,74 @@ button {
 }
 button:hover { background: #4752c4; }
 
-/* ── Corner avatar ── */
-.corner-link {
+/* ── Corner stack ── */
+.corner-stack {
   position: fixed;
   bottom: clamp(12px, 2.5vw, 20px);
   right: clamp(12px, 2.5vw, 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: clamp(8px, 1.5vw, 14px);
+}
+
+.corner-item {
+  position: relative;
+  display: block;
+  text-decoration: none;
+}
+
+/* Tooltip — centered above the button */
+.corner-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  left: auto;
+  transform: translateY(4px);
+  background: #2a2c30;
+  color: #7a7d85;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(9px, 1.4vw, 11px);
+  white-space: normal;
+  width: clamp(56px, 10vw, 90px);
+  text-align: center;
+  padding: 5px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  line-height: 1.4;
+}
+
+/* arrow pointing down, aligned right */
+.corner-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: clamp(20px, 4vw, 35px);
+  border: 5px solid transparent;
+  border-bottom: none;
+  border-top-color: #2a2c30;
+}
+
+.corner-item:hover .corner-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* TikTok tooltip — red glow */
+.corner-item.tiktok:hover .corner-tooltip {
+  box-shadow: 0 4px 16px rgba(255,43,43,0.5);
+  color: #9a9da5;
+}
+
+/* Discord tooltip — purple glow */
+.corner-item.discord-server:hover .corner-tooltip {
+  box-shadow: 0 4px 16px rgba(88,101,242,0.5);
+  color: #9a9da5;
+}
+
+.corner-link {
   display: block;
   width: clamp(56px, 10vw, 90px);
   height: clamp(56px, 10vw, 90px);
@@ -231,12 +294,20 @@ button:hover { background: #4752c4; }
   overflow: hidden;
   box-shadow: 0 6px 16px rgba(0,0,0,0.45);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  text-decoration: none;
 }
-.corner-link:hover {
+
+.corner-item:hover .corner-link {
   transform: scale(1.05);
+}
+
+.corner-item.tiktok:hover .corner-link {
+  box-shadow: 0 10px 25px rgba(255,43,43,0.65);
+}
+
+.corner-item.discord-server:hover .corner-link {
   box-shadow: 0 10px 25px rgba(88,101,242,0.7);
 }
+
 .corner-avatar {
   width: 100%;
   height: 100%;
@@ -256,7 +327,8 @@ button:hover { background: #4752c4; }
   <div class="card">
 
     <div class="user">
-      <img class="pfp" src="assets/main_avatar.jpeg" alt="Avatar" />
+      <img class="pfp" src="assets/main_avatar.jpeg" alt="Avatar"
+        onerror="this.style.background='#ff2b2b';this.style.opacity='0.3'" />
       <div class="user-info">
         <div class="username">𝘡𝘶𝘬𝘪 (ずき)</div>
         <div class="username-handle">_callmezuki_</div>
@@ -277,7 +349,7 @@ button:hover { background: #4752c4; }
       <div class="glitch-wrap">
         <span class="glitch-text" id="glitchText">stop stalking me</span>
       </div>
-      <button onclick="window.location.href='https://discord.com/app'">
+      <button onclick="(function(){ window.location.href='discord://'; setTimeout(function(){ window.open('https://discord.com/app','_blank') }, 1500) })()">
         Return to Discord
       </button>
     </div>
@@ -285,9 +357,25 @@ button:hover { background: #4752c4; }
   </div>
 </div>
 
-<a class="corner-link" href="https://www.tiktok.com/@callmezuki0" target="_blank" rel="noopener">
-  <img class="corner-avatar" src="assets/corner_avatar.jpeg" alt="TikTok" />
-</a>
+<div class="corner-stack">
+
+  <a class="corner-item discord-server" href="https://discord.gg/midnightchasers" target="_blank" rel="noopener">
+    <span class="corner-tooltip">Midnight Chasers Discord</span>
+    <div class="corner-link">
+      <img class="corner-avatar" src="assets/discord_image.jpeg" alt="Midnight Chasers"
+        onerror="this.style.background='#5865F2';this.style.opacity='0.4'" />
+    </div>
+  </a>
+
+  <a class="corner-item tiktok" href="https://www.tiktok.com/@callmezuki0" target="_blank" rel="noopener">
+    <span class="corner-tooltip">Zuki's TikTok</span>
+    <div class="corner-link">
+      <img class="corner-avatar" src="assets/corner_avatar.jpeg" alt="TikTok"
+        onerror="this.style.background='#ff2b2b';this.style.opacity='0.4'" />
+    </div>
+  </a>
+
+</div>
 
 <script>
 
